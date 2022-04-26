@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.utilities;
 
 public class Url {
     private String url;
