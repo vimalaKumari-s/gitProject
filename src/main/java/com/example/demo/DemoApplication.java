@@ -75,32 +75,32 @@ public class DemoApplication {
 //				System.out.println(latestCommitHash);
 				return valid;
 			}
-//			public  List<String> fetchGitBranchesTwo(String gitUrl)  {
-//				Collection<Ref> refs;
-//				List<String> branches = new ArrayList<String>();
-//				try {
-//					File file = new File("/Users/vimalakumari/Desktop/path/to/repo");
-//
-//					Git git = Git.cloneRepository()
-//						.setBare( true )
-//						.setURI( gitUrl)
-//						.setGitDir(file)
-//							.setCloneAllBranches(true)
-//							.call();
-//					List<Ref> list = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
-//					list.stream().map(e->branches.add(e.getLeaf().getName()));
-//					return branches;
-//				} catch (InvalidRemoteException e) {
-//					System.out.println(" InvalidRemoteException occurred in fetchGitBranches");
-//					e.printStackTrace();
-//				} catch (TransportException e) {
-//					System.out.println(" TransportException occurred in fetchGitBranches");
-//
-//				} catch (GitAPIException e) {
-//					System.out.println(" GitAPIException occurred in fetchGitBranches");
-//				}
-//				return branches;
-//			}
+			public  List<String> fetchGitBranchesTwo(String gitUrl)  {
+				Collection<Ref> refs;
+				List<String> branches = new ArrayList<String>();
+				try {
+					File file = new File("/Users/vimalakumari/Desktop/path/to/repo");
+
+					Git git = Git.cloneRepository()
+						.setBare( true )
+						.setURI( gitUrl)
+						.setGitDir(file)
+							.setCloneAllBranches(true)
+							.call();
+					List<Ref> list = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
+					list.stream().map(e->branches.add(e.getLeaf().getName()));
+					return branches;
+				} catch (InvalidRemoteException e) {
+					System.out.println(" InvalidRemoteException occurred in fetchGitBranches");
+					e.printStackTrace();
+				} catch (TransportException e) {
+					System.out.println(" TransportException occurred in fetchGitBranches");
+
+				} catch (GitAPIException e) {
+					System.out.println(" GitAPIException occurred in fetchGitBranches");
+				}
+				return branches;
+			}
 
 			public  List<String> fetchGitBranches(String gitUrl)
 			{
