@@ -39,7 +39,6 @@ public class DemoApplication {
 
 		     @RequestMapping("/")
 			 public String defaultM(){
-				 System.out.println();
 				 return "hello";
 			 }
 
