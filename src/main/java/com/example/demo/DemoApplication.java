@@ -80,7 +80,7 @@ public class DemoApplication {
 				if (loginDetails.getUserName()!=null && loginDetails.getAccessToken()!=null)
 					command.setCredentialsProvider( new UsernamePasswordCredentialsProvider( loginDetails.getUserName(), loginDetails.getAccessToken()) );
 
-				refs=command.call();
+					refs=command.call();
 
 				for (Ref ref : refs) {
 					branches.add(ref.getName().substring(ref.getName().lastIndexOf("/")+1, ref.getName().length()));
