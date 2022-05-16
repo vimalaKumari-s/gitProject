@@ -4,6 +4,7 @@ import com.example.demo.exceptions.ExceptionHelper;
 import com.example.demo.utilities.LoginDetails;
 import com.example.demo.utilities.Url;
 import com.example.demo.utilities.UtilityMethods;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.LsRemoteCommand;
@@ -38,7 +39,7 @@ public class DemoApplication {
 		public class GitController {
 
 		     @RequestMapping("/")
-			 public String defaultM(){
+			 public String defaultM(Object object){
 				 return "hello";
 			 }
 
@@ -49,6 +50,7 @@ public class DemoApplication {
 						.setRemote(loginDetails.getUrl());
 //			    File file = new File("/Users/vimalakumari/Downloads/demo");
 //				Repository repo = new RepositoryBuilder().setWorkTree(file).build();
+
 				Repository repo  = command.getRepository();
 				Iterator<RevCommit> latestCommit = new Git(repo).
 						log().
