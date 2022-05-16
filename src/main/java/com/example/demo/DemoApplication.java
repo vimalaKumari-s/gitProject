@@ -50,6 +50,7 @@ public class DemoApplication {
 						.setRemote(loginDetails.getUrl());
 //			    File file = new File("/Users/vimalakumari/Downloads/demo");
 //				Repository repo = new RepositoryBuilder().setWorkTree(file).build();
+
 				Repository repo  = command.getRepository();
 				Iterator<RevCommit> latestCommit = new Git(repo).
 						log().
