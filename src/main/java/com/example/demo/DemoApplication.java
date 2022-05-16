@@ -50,7 +50,6 @@ public class DemoApplication {
 						.setRemote(loginDetails.getUrl());
 //			    File file = new File("/Users/vimalakumari/Downloads/demo");
 //				Repository repo = new RepositoryBuilder().setWorkTree(file).build();
-
 				Repository repo  = command.getRepository();
 				Iterator<RevCommit> latestCommit = new Git(repo).
 						log().
@@ -63,11 +62,6 @@ public class DemoApplication {
 						return false;
 				}
 				return true;
-			}
-
-			@PostMapping("/issue")
-			public void checkDefault(){
-			System.out.println("lets see");
 			}
 
 		@PostMapping(value = "/branches")
