@@ -24,10 +24,30 @@ jobs:
         run: |
           echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
           echo $all
+  test:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.arr.outputs.arr}}
+    steps:
+      - uses: actions/checkout@v1
+      # This step will create "an array" of strings, e.g. "path1 path2 path3"
+      - name: array
+        id: arr
+        run: |
+          arr=()
+          for i in "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+          do
+            if [[ $i == "src.*" ]]; then
+              arr+=(i)
+            fi
+          done
+          echo ::set-output name=arr::${arr[@]}  
+          echo $arr
   lint:
     runs-on: ubuntu-latest
     # require the first job to have ran
     needs: changedfiles
+    if
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -36,8 +56,8 @@ jobs:
       - name: echo changed files
         run: |
           sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE test;' -uroot -proot
-          mysql -e 'SHOW DATABASES;' -uroot -proot
-          mysql -e 'use test;' -uroot -proot
-          mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
+#          mysql -e 'CREATE DATABASE test;' -uroot -proot
+#          mysql -e 'SHOW DATABASES;' -uroot -proot
+#          mysql -e 'use test;' -uroot -proot
+#          mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
           echo ${{needs.changedfiles.outputs.all}}
