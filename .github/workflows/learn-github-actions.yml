@@ -47,7 +47,6 @@ jobs:
     runs-on: ubuntu-latest
     # require the first job to have ran
     needs: changedfiles
-    if
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
