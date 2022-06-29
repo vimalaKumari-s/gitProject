@@ -36,6 +36,7 @@ jobs:
         run: |
           arr=()
           for i in "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+          echo $i
           do
             if [[ $i =~ "^src".* ]]; then
               arr+=(i)
