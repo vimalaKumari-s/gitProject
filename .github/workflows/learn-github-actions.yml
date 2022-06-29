@@ -15,7 +15,7 @@ jobs:
         id: changes
         # Set outputs using the command.
         run: |
-          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
           echo "::set-output name=ts::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .ts$ | xargs)"
           echo $all
   lint:
@@ -25,5 +25,5 @@ jobs:
     # only run there are changed files
     steps:
       - name: echo changed files
-        run: echo ${{needs.changedfiles.outputs.ts}}
+        run: echo ${{needs.changedfiles.outputs.all}}
 
