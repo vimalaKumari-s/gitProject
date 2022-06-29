@@ -39,7 +39,7 @@ jobs:
           do
             if [[ $i =~ "^src".* ]]; then
               echo "$i"
-              arr+=(i)
+              arr+=($i)
             fi
           done
           echo ::set-output name=array::${arr[*]}  
