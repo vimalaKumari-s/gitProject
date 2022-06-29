@@ -43,20 +43,20 @@ jobs:
           done
           echo ::set-output name=arr::${arr[@]}  
           echo $arr
-  lint:
-    runs-on: ubuntu-latest
-    # require the first job to have ran
-    needs: changedfiles
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: echo changed files
-        run: |
-          sudo /etc/init.d/mysql start
+#  lint:
+#    runs-on: ubuntu-latest
+#    # require the first job to have ran
+#    needs: changedfiles
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+#      - name: echo changed files
+#        run: |
+#          sudo /etc/init.d/mysql start
 #          mysql -e 'CREATE DATABASE test;' -uroot -proot
 #          mysql -e 'SHOW DATABASES;' -uroot -proot
 #          mysql -e 'use test;' -uroot -proot
 #          mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
-          echo ${{needs.changedfiles.outputs.all}}
+#          echo ${{needs.changedfiles.outputs.all}}
