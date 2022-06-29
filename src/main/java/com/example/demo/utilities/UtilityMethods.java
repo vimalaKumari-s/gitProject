@@ -11,4 +11,7 @@ public class UtilityMethods {
         Matcher m = p.matcher(commitMessage);
         return m.matches();
     }
+    public void testMethod(){
+
+    }
 }
