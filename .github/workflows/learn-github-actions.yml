@@ -55,7 +55,7 @@ jobs:
           fetch-depth: 0
       - name: echo changed files
         run: |
-          arr = (src/main/java/sqlFile.sql src/main/java/anotherSqlfile.sql)
+          arr=('src/main/java/sqlFile.sql' 'src/main/java/anotherSqlfile.sql')
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE test;' -uroot -proot
           mysql -e 'SHOW DATABASES;' -uroot -proot
