@@ -38,10 +38,10 @@ public class DemoApplication {
 		@RestController
 		public class GitController {
 
-		     @RequestMapping("/")
-			 public String defaultM(Object object){
-				 return "hello";
-			 }
+//		     @RequestMapping("/")
+//			 public String defaultM(Object object){
+//				 return "hello";
+//			 }
 
 			@PostMapping("/validateCommits")
 			public boolean validateCommits(@RequestBody LoginDetails loginDetails) throws GitAPIException, IOException {
@@ -63,11 +63,6 @@ public class DemoApplication {
 						return false;
 				}
 				return true;
-			}
-
-			@PostMapping("/issue")
-			public void checkDefault(){
-			System.out.println("lets see");
 			}
 
 		@PostMapping(value = "/branches")
