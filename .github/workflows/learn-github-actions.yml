@@ -24,40 +24,41 @@ jobs:
         run: |
           echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
           echo $all
-  test:
-    runs-on: ubuntu-latest
-    outputs:
-      result: ${{ steps.arrayId.outputs.array}}
-    steps:
-      - uses: actions/checkout@v1
-      # This step will create "an array" of strings, e.g. "path1 path2 path3"
-      - name: array
-        id: arrayId
-        run: |
-          arr=()
-          for i in "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
-          do
-            if [[ "$i" =~ "^src".* ]]; then
-              echo "$i"
-              arr+=($i)
-            fi
-          done
-          echo ::set-output name=array::${arr[*]}  
-          echo $arr
-#  lint:
+#  test:
 #    runs-on: ubuntu-latest
-#    # require the first job to have ran
-#    needs: changedfiles
+#    outputs:
+#      result: ${{ steps.arrayId.outputs.array}}
 #    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - name: echo changed files
+#      - uses: actions/checkout@v1
+#      # This step will create "an array" of strings, e.g. "path1 path2 path3"
+#      - name: array
+#        id: arrayId
 #        run: |
-#          sudo /etc/init.d/mysql start
-#          mysql -e 'CREATE DATABASE test;' -uroot -proot
-#          mysql -e 'SHOW DATABASES;' -uroot -proot
-#          mysql -e 'use test;' -uroot -proot
-#          mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
-#          echo ${{needs.changedfiles.outputs.all}}
+#          arr=()
+#          for i in "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+#          do
+#            if [[ "$i" =~ "^src".* ]]; then
+#              echo "$i"
+#              arr+=($i)
+#            fi
+#          done
+#          echo ::set-output name=array::${arr[*]}
+#          echo $arr
+  lint:
+    runs-on: ubuntu-latest
+    # require the first job to have ran
+    needs: changedfiles
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: echo changed files
+        run: |
+          arr = (src/main/java/sqlFile.sql src/main/java/anotherSqlfile.sql)
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE test;' -uroot -proot
+          mysql -e 'SHOW DATABASES;' -uroot -proot
+          mysql -e 'use test;' -uroot -proot
+          mysql -uroot -proot test < $arr
+          echo ${{needs.changedfiles.outputs.all}}
