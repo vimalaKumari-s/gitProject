@@ -19,11 +19,11 @@ public class ExceptionHelper {
         return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = { TransportException.class })
-    ResponseEntity<Object> handleTransportException(TransportException ex){
-        logger.error("Some issue happened in the transport",ex.getMessage());
-        return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(value = { TransportException.class })
+//    ResponseEntity<Object> handleTransportException(TransportException ex){
+//        logger.error("Some issue happened in the transport",ex.getMessage());
+//        return new ResponseEntity<Object>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler(value = { GitAPIException.class })
     ResponseEntity<Object> handleGitApiException(GitAPIException ex){
