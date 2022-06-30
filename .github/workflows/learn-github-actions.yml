@@ -6,24 +6,24 @@ on:
       - "*"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-#  changedfiles:
-#    runs-on: ubuntu-latest
-#    # Map a step output to a job output
-#    outputs:
-#      all: ${{ steps.changes.outputs.all}}
-#    steps:
-#      # Make sure we have some code to diff.
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - name: Get changed files
-#        id: changes
-#        # Set outputs using the command.
-#        run: |
-#          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
-#          echo $all
+   This workflow contains a single job called "build"
+  changedfiles:
+    runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      all: ${{ steps.changes.outputs.all}}
+    steps:
+      # Make sure we have some code to diff.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changes
+        # Set outputs using the command.
+        run: |
+          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+          echo $all
   test:
     runs-on: ubuntu-latest
     outputs:
@@ -38,7 +38,7 @@ jobs:
           #readarray -t my_array < <($(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}))
           for i in $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           do
-            if [[ $i =~ "^src".* ]]; then
+            if [[ "$i" =~ "^src".* ]]; then
               echo "$i"
               arr+=($i)
             fi
