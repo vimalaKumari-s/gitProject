@@ -35,17 +35,15 @@ jobs:
         id: arrayId
         run: |
           arr=()
-          arr2=(src/main/java/anotherSqlfile.sql .github/workflows/learn-github-actions.yml src/main/java/com/example/demo/DemoApplication.java)
-          for i in $arr2[*]
+          for i in $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           do
-            echo $i
-            if [[ "src/main/java/anotherSqlfile.sql" =~ "^src".* ]]; then
+            if [[ "$i" =~ ^src.* ]]; then
               echo "$i"
-              arr+=($i)
+              arr+=("$i")
             fi
           done
           echo ::set-output name=array::${arr[*]}
-          echo $arr
+          echo "${arr[*]}"
 #  lint:
 #    runs-on: ubuntu-latest
 #    # require the first job to have ran
