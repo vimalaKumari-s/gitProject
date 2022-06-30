@@ -7,23 +7,23 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
    #This workflow contains a single job called "build"
-  changedfiles:
-    runs-on: ubuntu-latest
-    # Map a step output to a job output
-    outputs:
-      all: ${{ steps.changes.outputs.all}}
-    steps:
-      # Make sure we have some code to diff.
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Get changed files
-        id: changes
-        # Set outputs using the command.
-        run: |
-          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
-          echo $all
+#  changedfiles:
+#    runs-on: ubuntu-latest
+#    # Map a step output to a job output
+#    outputs:
+#      all: ${{ steps.changes.outputs.all}}
+#    steps:
+#      # Make sure we have some code to diff.
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+#      - name: Get changed files
+#        id: changes
+#        # Set outputs using the command.
+#        run: |
+#          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+#          echo $all
   test:
     runs-on: ubuntu-latest
     outputs:
@@ -35,6 +35,7 @@ jobs:
         id: arrayId
         run: |
           arr=()
+          declare -A associative_array=(["one"]="Baeldung" ["two"]="is" ["three"]="cool")
           for i in $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           do
             if [[ "$i" =~ ^src.* ]]; then
@@ -44,21 +45,21 @@ jobs:
           done
           echo ::set-output name=array::${arr[*]}
           echo "${arr[*]}"
-  lint:
-    runs-on: ubuntu-latest
-    # require the first job to have ran
-    needs: test
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: echo changed files
-        run: |
-          sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE test;' -uroot -proot
-          mysql -e 'SHOW DATABASES;' -uroot -proot
-          mysql -e 'use test;' -uroot -proot
-          mysql -uroot -proot test < ${{needs.test.outputs.array}}
-          echo ${{needs.test.outputs.array}}
+#  lint:
+#    runs-on: ubuntu-latest
+#    # require the first job to have ran
+#    needs: test
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+#      - name: echo changed files
+#        run: |
+#          sudo /etc/init.d/mysql start
+#          mysql -e 'CREATE DATABASE test;' -uroot -proot
+#          mysql -e 'SHOW DATABASES;' -uroot -proot
+#          mysql -e 'use test;' -uroot -proot
+#          mysql -uroot -proot test < ${{needs.test.outputs.array}}
+#          echo ${{needs.test.outputs.array}}
           
