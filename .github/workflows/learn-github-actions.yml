@@ -27,7 +27,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     outputs:
-      result: ${{ steps.arrayId.outputs.array}}
+      result: ${{ steps.arrayId.outputs.array }}
     steps:
       - uses: actions/checkout@v1
       # This step will create "an array" of strings, e.g. "path1 path2 path3"
@@ -59,5 +59,5 @@ jobs:
           mysql -e 'CREATE DATABASE test;' -uroot -proot
           mysql -e 'SHOW DATABASES;' -uroot -proot
           mysql -e 'use test;' -uroot -proot
-          mysql -uroot -proot test < ${{ steps.arrayId.outputs.array}}
-          echo ${{ steps.arrayId.outputs.array}}
+          mysql -uroot -proot test < ${{ needs.test.outputs.array }}
+          echo ${{ needs.test.outputs.array }}
