@@ -36,7 +36,7 @@ jobs:
         run: |
           arr=()
           arr2 = (src/main/java/anotherSqlfile.sql .github/workflows/learn-github-actions.yml src/main/java/com/example/demo/DemoApplication.java)
-          #readarray -t my_array < <($(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}))
+          
           for i in $arr2[*]
           do
             if [[ "$i" =~ "^src".* ]]; then
