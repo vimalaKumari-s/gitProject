@@ -35,12 +35,11 @@ jobs:
         id: arrayId
         run: |
           arr=()
+          #readarray -t my_array < <($(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}))
           val=0
-          for i in "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+          for i in $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           do
-          echo "\n"
           echo $i
-          echo "\n"
           val+=1
             if [[ "$i" =~ "^src".* ]]; then
               echo "$i"
