@@ -39,7 +39,7 @@ jobs:
           
           for i in $arr2[*]
           do
-            if [[ "$i" =~ "^src".* ]]; then
+            if [[ "src/main/java/anotherSqlfile.sql" =~ "^src".* ]]; then
               echo "$i"
               arr+=($i)
             fi
