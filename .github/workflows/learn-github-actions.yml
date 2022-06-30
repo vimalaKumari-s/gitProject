@@ -24,26 +24,27 @@ jobs:
         run: |
           echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
           echo $all
-#  test:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      result: ${{ steps.arrayId.outputs.array}}
-#    steps:
-#      - uses: actions/checkout@v1
-#      # This step will create "an array" of strings, e.g. "path1 path2 path3"
-#      - name: array
-#        id: arrayId
-#        run: |
-#          arr=()
-#          for i in "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
-#          do
-#            if [[ "$i" =~ "^src".* ]]; then
-#              echo "$i"
-#              arr+=($i)
-#            fi
-#          done
-#          echo ::set-output name=array::${arr[*]}
-#          echo $arr
+  test:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.arrayId.outputs.array}}
+    steps:
+      - uses: actions/checkout@v1
+      # This step will create "an array" of strings, e.g. "path1 path2 path3"
+      - name: array
+        id: arrayId
+        run: |
+          arr=()
+          for i in "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+          do
+          echo $i
+            if [[ "$i" =~ "^src".* ]]; then
+              echo "$i"
+              arr+=($i)
+            fi
+          done
+          echo ::set-output name=array::${arr[*]}
+          echo $arr
   lint:
     runs-on: ubuntu-latest
     # require the first job to have ran
