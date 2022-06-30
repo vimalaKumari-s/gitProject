@@ -6,28 +6,28 @@ on:
       - "*"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-#  changedfiles:
-#    runs-on: ubuntu-latest
-#    # Map a step output to a job output
-#    outputs:
-#      all: ${{ steps.changes.outputs.all}}
-#    steps:
-#      # Make sure we have some code to diff.
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - name: Get changed files
-#        id: changes
-#        # Set outputs using the command.
-#        run: |
-#          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
-#          echo $all
+   #This workflow contains a single job called "build"
+  changedfiles:
+    runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      all: ${{ steps.changes.outputs.all}}
+    steps:
+      # Make sure we have some code to diff.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changes
+        # Set outputs using the command.
+        run: |
+          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+          echo $all
   test:
     runs-on: ubuntu-latest
     outputs:
-      result: ${{ steps.arrayId.outputs.array}}
+      result: ${{ steps.arrayId.outputs.array }}
     steps:
       - uses: actions/checkout@v1
       # This step will create "an array" of strings, e.g. "path1 path2 path3"
@@ -35,31 +35,30 @@ jobs:
         id: arrayId
         run: |
           arr=()
-          #readarray -t my_array < <($(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}))
           for i in $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           do
-            if [[ $i =~ "^src".* ]]; then
+            if [[ "$i" =~ ^src.* ]]; then
               echo "$i"
-              arr+=($i)
+              arr+=("$i")
             fi
           done
           echo ::set-output name=array::${arr[*]}
-          echo $arr
-#  lint:
-#    runs-on: ubuntu-latest
-#    # require the first job to have ran
-#    needs: changedfiles
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - name: echo changed files
-#        run: |
-#          arr=('src/main/java/sqlFile.sql' 'src/main/java/anotherSqlfile.sql')
-#          sudo /etc/init.d/mysql start
-#          mysql -e 'CREATE DATABASE test;' -uroot -proot
-#          mysql -e 'SHOW DATABASES;' -uroot -proot
-#          mysql -e 'use test;' -uroot -proot
-#          mysql -uroot -proot test < $arr
-#          echo ${{needs.changedfiles.outputs.all}}
+          echo "${arr[*]}"
+  lint:
+    runs-on: ubuntu-latest
+    # require the first job to have ran
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: echo changed files
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE test;' -uroot -proot
+          mysql -e 'SHOW DATABASES;' -uroot -proot
+          mysql -e 'use test;' -uroot -proot
+          #mysql -uroot -proot test < ${{needs.test.outputs.array}}
+          echo ${{needs.test.outputs.array}}
+          
