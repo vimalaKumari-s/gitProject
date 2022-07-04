@@ -54,24 +54,25 @@ jobs:
             fi
           fi
           done
-          echo "::set-output name=schema::${schemaList[@]}
-          echo "::set-output name=seed-data::${seedDataList[@]}
+          echo "::set-output name=schema::"${schemaList[@]}"
+          echo "::set-output name=seed-data::"${seedDataList[@]}"
 
       - name: Change the src permissions
         run: chmod -R +x src/*
       - name: run the db
         run: |
-           schema= ${{steps.arrayId.outputs.schema}}
-           seedData= ${{steps.arrayId.outputs.seed-data}}
+           schema=${{steps.arrayId.outputs.schema}}
+           seedData=${{steps.arrayId.outputs.seed-data}}
            echo "${schema[@]}"
            echo "${seedData[@]}"
+           sample=('src/main/java/anotherSqlfile.sql')
            if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then
               sudo /etc/init.d/mysql start
               mysql -e 'CREATE DATABASE test;' -uroot -proot
               mysql -e 'SHOW DATABASES;' -uroot -proot
               mysql -e 'use test;' -uroot -proot
+              mysql -uroot -proot test < $sample
               mysql -uroot -proot test < ${schema[@]}
-              mysql -uroot -proot test < ${seedData[@]}
            fi
 
 
