@@ -23,7 +23,7 @@ jobs:
         # Set outputs using the command.
         run: |
           echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
-          echo $all
+          echo ${all[@]}
   test:
     runs-on: ubuntu-latest
     outputs:
@@ -88,5 +88,5 @@ jobs:
           mysql -e 'SHOW DATABASES;' -uroot -proot
           mysql -e 'use test;' -uroot -proot
           mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
-          echo ${{needs.changedfiles.outputs.all}}
+          echo ${{needs.changedfiles.outputs.all[@]}}
 
