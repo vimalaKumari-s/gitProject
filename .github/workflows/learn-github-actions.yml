@@ -29,9 +29,11 @@ jobs:
     outputs:
       result: ${{ steps.arrayId.outputs.array }}
     steps:
-      - uses: actions/checkout@v1
-      # This step will create "an array" of strings, e.g. "path1 path2 path3"
-      - name: array
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: find the git diff files
         id: arrayId
         run: |
           arr=()
@@ -54,7 +56,6 @@ jobs:
           echo "::set-output name=schema::${schemaList[@]}
           echo "::set-output name=seed-data::${seedDataList[@]}
 
-      - uses: actions/checkout@v2
       - name: run the db
         run: |
            schema= ${{steps.arrayId.outputs.schema}}
@@ -66,8 +67,8 @@ jobs:
               mysql -e 'CREATE DATABASE test;' -uroot -proot
               mysql -e 'SHOW DATABASES;' -uroot -proot
               mysql -e 'use test;' -uroot -proot
-              mysql -uroot -proot test < ${schema[@]}
-              mysql -uroot -proot test < ${seedData[@]}
+              mysql -uroot -proot test < ${{schema[@]}}
+              mysql -uroot -proot test < ${{seedData[@]}}
            fi
           
 
