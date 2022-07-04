@@ -57,6 +57,8 @@ jobs:
         run: |
            schema= ${{steps.arrayId.outputs.schema}}
            seedData= ${{steps.arrayId.outputs.seed-data}}
+           echo "${schema[@]}
+           echo "${seedData[@]}
            if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then 
               sudo /etc/init.d/mysql start
               mysql -e 'CREATE DATABASE test;' -uroot -proot
@@ -64,6 +66,7 @@ jobs:
               mysql -e 'use test;' -uroot -proot
               mysql -uroot -proot test < ${schema[@]}
               mysql -uroot -proot test < ${seedData[@]}
+           fi
           
 
 #  lint:
