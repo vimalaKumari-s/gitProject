@@ -88,5 +88,6 @@ jobs:
           mysql -e 'SHOW DATABASES;' -uroot -proot
           mysql -e 'use test;' -uroot -proot
           mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
-          echo ${{needs.changedfiles.outputs.all[@]}}
+          list= ${{needs.changedfiles.outputs.all}}
+          echo "${list[@]}"
 
