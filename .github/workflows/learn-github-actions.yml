@@ -65,7 +65,7 @@ jobs:
            seedData= ${{steps.arrayId.outputs.seed-data}}
            echo "${schema[@]}"
            echo "${seedData[@]}"
-           sample='src/main/java/sqlFile.sql'
+           sample=('src/main/java/sqlFile.sql','src/main/java/anotherSqlfile.sql')
            if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then
               sudo /etc/init.d/mysql start
               mysql -e 'CREATE DATABASE test;' -uroot -proot
