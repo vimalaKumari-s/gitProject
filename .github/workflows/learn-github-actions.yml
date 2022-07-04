@@ -40,7 +40,7 @@ jobs:
           declare -A seedDataList
           for i in ${arr[*]}
           do
-          if [[ "$i" =~ ^schema.* ]]; then
+          if [[ "$i" =~ ^src.* ]]; then
             key=$(echo $i | cut -d'/' -f 2-)
             schemaList["${key}"]=$i
           elif [[ "$i" =~ ^seed-data.*  ]]; then
