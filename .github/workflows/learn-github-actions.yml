@@ -6,7 +6,7 @@ on:
       - "*"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-   #This workflow contains a single job called "build"
+#   This workflow contains a single job called "build"
   changedfiles:
     runs-on: ubuntu-latest
     # Map a step output to a job output
@@ -29,25 +29,53 @@ jobs:
     outputs:
       result: ${{ steps.arrayId.outputs.array }}
     steps:
-      - uses: actions/checkout@v1
-      # This step will create "an array" of strings, e.g. "path1 path2 path3"
-      - name: array
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: find the git diff files
         id: arrayId
         run: |
           arr=()
-          for i in $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+          arr=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+          declare -A schemaList
+          declare -A seedDataList
+          for i in ${arr[*]}
           do
-            if [[ "$i" =~ ^src.* ]]; then
-              echo "$i"
-              arr+=("$i")
+          if [[ "$i" =~ ^src.* ]]; then
+            key=$(echo $i | cut -d'/' -f 2-)
+            schemaList["${key}"]=$i
+          elif [[ "$i" =~ ^seed-data.*  ]]; then
+            key=$(echo $i | cut -d'/' -f 2-)
+            seedDataList["${key}"]=$i
+            if [[ ! -v schemaList["${key}"] ]]; then
+              schemaList["${key}"]="schema/""$i"
             fi
+          fi
           done
-          echo ::set-output name=array::${arr[*]}
-          echo "${arr[*]}"
+          echo "::set-output name=schema::${schemaList[@]}
+          echo "::set-output name=seed-data::${seedDataList[@]}
+
+      - name: run the db
+        run: |
+           schema= ${{steps.arrayId.outputs.schema}}
+           seedData= ${{steps.arrayId.outputs.seed-data}}
+           echo "${schema[@]}"
+           echo "${seedData[@]}"
+           if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then 
+              sudo /etc/init.d/mysql start
+              mysql -e 'CREATE DATABASE test;' -uroot -proot
+              mysql -e 'SHOW DATABASES;' -uroot -proot
+              mysql -e 'use test;' -uroot -proot
+              mysql -uroot -proot test < ${schema[@]}
+              mysql -uroot -proot test < ${seedData[@]}
+           fi
+          
+
   lint:
     runs-on: ubuntu-latest
     # require the first job to have ran
-    needs: test
+    needs: changedfiles
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -59,6 +87,6 @@ jobs:
           mysql -e 'CREATE DATABASE test;' -uroot -proot
           mysql -e 'SHOW DATABASES;' -uroot -proot
           mysql -e 'use test;' -uroot -proot
-          mysql -uroot -proot test < ${{needs.test.outputs.array}}
-          echo ${{needs.test.outputs.array}}
-          
+          mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
+          echo ${{needs.changedfiles.outputs.all}}
+
