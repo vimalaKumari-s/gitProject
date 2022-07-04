@@ -46,13 +46,13 @@ jobs:
           elif [[ "$i" =~ ^seed-data.*  ]]; then
             key=$(echo $i | cut -d'/' -f 2-)
             seedDataList["${key}"]=$i
-            if [[ ! -v schemaList["${key}"] ]]; then
+            if [[ ! -v schemaList["${key}"] ]]; thehttps://github.com/vimalaKumari-s/gitProject/actions/runs/2589906176n
               schemaList["${key}"]="schema/""$i"
             fi
-         fi
-        done
-        echo "::set-output name=schema::${!schemaList[@]}
-        echo "::set-output name=seed-data::${!seedDataList[@]}
+          fi
+          done
+          echo "::set-output name=schema::${!schemaList[@]}
+          echo "::set-output name=seed-data::${!seedDataList[@]}
       - name: run the db
         run: |
            schema= ${{steps.arrayId.outputs.schema}}
