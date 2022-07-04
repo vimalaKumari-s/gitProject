@@ -56,7 +56,7 @@ jobs:
       - name: run the db
         run: |
            schema= ${{steps.arrayId.outputs.schema}}
-           seed-data=${{steps.arrayId.outputs.seed-data}}
+           seed-data= ${{steps.arrayId.outputs.seed-data}}
            if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then 
               sudo /etc/init.d/mysql start
               mysql -e 'CREATE DATABASE test;' -uroot -proot
