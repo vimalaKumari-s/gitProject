@@ -35,16 +35,37 @@ jobs:
         id: arrayId
         run: |
           arr=()
-          declare -A associative_array=(["one"]="Baeldung" ["two"]="is" ["three"]="cool")
-          for i in $(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+          arr=git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+          declare -A schemaList
+          declare -A seedDataList
+          for i in ${arr[*]}
           do
-            if [[ "$i" =~ ^src.* ]]; then
-              echo "$i"
-              arr+=("$i")
+          if [[ "$i" =~ ^schema.* ]]; then
+            key=$(echo $i | cut -d'/' -f 2-)
+            schemaList["${key}"]=$i
+          elif [[ "$i" =~ ^seed-data.*  ]]; then
+            key=$(echo $i | cut -d'/' -f 2-)
+            seedDataList["${key}"]=$i
+            if [[ ! -v schemaList["${key}"] ]]; then
+              schemaList["${key}"]="schema/""$i"
             fi
-          done
-          echo ::set-output name=array::${arr[*]}
-          echo "${arr[*]}"
+         fi
+        done
+        echo "::set-output name=schema::${!schemaList[@]}
+        echo "::set-output name=seed-data::${!seedDataList[@]}
+      - name: run the db
+        run: |
+           schema= ${{steps.arrayId.outputs.schema}}
+           seed-data=${{steps.arrayId.outputs.seed-data}}
+           if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then 
+              sudo /etc/init.d/mysql start
+              mysql -e 'CREATE DATABASE test;' -uroot -proot
+              mysql -e 'SHOW DATABASES;' -uroot -proot
+              mysql -e 'use test;' -uroot -proot
+              mysql -uroot -proot test < ${schema[@]}
+              mysql -uroot -proot test < ${seed-data[@]}
+          
+
 #  lint:
 #    runs-on: ubuntu-latest
 #    # require the first job to have ran
@@ -62,4 +83,4 @@ jobs:
 #          mysql -e 'use test;' -uroot -proot
 #          mysql -uroot -proot test < ${{needs.test.outputs.array}}
 #          echo ${{needs.test.outputs.array}}
-          
+#
