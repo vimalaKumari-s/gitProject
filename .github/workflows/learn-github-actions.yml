@@ -29,7 +29,7 @@ jobs:
     outputs:
       result: ${{ steps.arrayId.outputs.array }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       # This step will create "an array" of strings, e.g. "path1 path2 path3"
       - name: array
         id: arrayId
@@ -53,6 +53,8 @@ jobs:
           done
           echo "::set-output name=schema::${schemaList[@]}
           echo "::set-output name=seed-data::${seedDataList[@]}
+
+      - uses: actions/checkout@v2
       - name: run the db
         run: |
            schema= ${{steps.arrayId.outputs.schema}}
