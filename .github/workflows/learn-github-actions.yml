@@ -51,8 +51,8 @@ jobs:
             fi
           fi
           done
-          echo "::set-output name=schema::${!schemaList[@]}
-          echo "::set-output name=seed-data::${!seedDataList[@]}
+          echo "::set-output name=schema::${schemaList[@]}
+          echo "::set-output name=seed-data::${seedDataList[@]}
       - name: run the db
         run: |
            schema= ${{steps.arrayId.outputs.schema}}
