@@ -69,6 +69,7 @@ jobs:
       - name: run the db
         run: |
            declare -a schema
+           echo ${{steps.arrayId.outputs.schema}}
            schema=${{steps.arrayId.outputs.schema}}
            seedData=${{steps.arrayId.outputs.seed-data}}
            for i in "${schema[@]}"
