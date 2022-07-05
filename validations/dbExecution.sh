@@ -4,11 +4,11 @@ if ( $execute ); then
   mysql -e 'CREATE DATABASE test;' -uroot -proot
   mysql -e 'SHOW DATABASES;' -uroot -proot
   mysql -e 'use test;' -uroot -proot
-  for i in ${{steps.arrayId.outputs.schema}}
+  for i in $2
      do
      mysql -uroot -proot test < $i
      done
-  for i in ${{steps.arrayId.outputs.seedData}}
+  for i in $3
      do
      mysql -uroot -proot test < $i
      done
