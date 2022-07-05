@@ -37,9 +37,9 @@ jobs:
       - name: find the git diff files
         id: arrayId
         run: |
-        all=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}) 
-        echo "$all"
-        /bin/bash validations/validator.sh "${all}"
+          all=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}) 
+          echo "$all"
+          /bin/bash validations/validator.sh "${all}"
 
       - name: Change the src permissions
         run: chmod -R +x src/*
