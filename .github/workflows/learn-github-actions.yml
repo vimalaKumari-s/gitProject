@@ -55,7 +55,7 @@ jobs:
               mysql -e 'CREATE DATABASE test;' -uroot -proot
               mysql -e 'SHOW DATABASES;' -uroot -proot
               mysql -e 'use test;' -uroot -proot
-              mysql -uroot -proot test < $sample
+              mysql -uroot -proot test < ${schema[@]}
            fi
 
 
