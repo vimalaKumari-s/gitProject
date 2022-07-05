@@ -48,12 +48,12 @@ s="src/main/java/com/example/demo/DemoApplication.java"
 
 
 
-declare -A hashmap
+#declare -A hashmap
 echo "Enter the user name: "
 read bindu
 echo "printing input"
 echo "$bindu"
-hashmap["key"]="value"
-hashmap["key2"]="value2"
-echo "${hashmap[@]}"
+#hashmap["key"]="value"
+#hashmap["key2"]="value2"
+#echo "${hashmap[@]}"
 #for key in "${!hashmap[@]}"; do echo $key; done
