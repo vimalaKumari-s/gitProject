@@ -49,10 +49,9 @@ s="src/main/java/com/example/demo/DemoApplication.java"
 
 
 #declare -A hashmap
-echo "Enter the user name: "
 #read bindu
 echo "printing input"
-echo "$bindu"
+echo "$1"
 #hashmap["key"]="value"
 #hashmap["key2"]="value2"
 #echo "${hashmap[@]}"
