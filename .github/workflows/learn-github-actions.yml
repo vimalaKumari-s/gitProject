@@ -72,13 +72,13 @@ jobs:
            echo ${{steps.arrayId.outputs.schema}}
             for i in ${{steps.arrayId.outputs.schema}}
             do
-              echo "$i"
+             schema+=($i)
             done
-           schema=${{steps.arrayId.outputs.schema}}
-           seedData=${{steps.arrayId.outputs.seed-data}}
+           #schema=${{steps.arrayId.outputs.schema}}
+           #seedData=${{steps.arrayId.outputs.seed-data}}
         
            echo "${schema[@]}"
-           echo "${seedData[@]}"
+           #echo "${seedData[@]}"
            sample=('src/main/java/anotherSqlfile.sql')
            if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then
               sudo /etc/init.d/mysql start
