@@ -18,6 +18,11 @@ elif [[ "$i" =~ ^seed-data.*  ]]; then
 fi
 done
 
+isChangeInDBFiles=false
+if [[ ${#schemaList[@]} -gt 0 || ${#seed-seedDataList[@]} -gt 0 ]]; then
+  isChangeInDBFiles=true
+fi
 
 echo "::set-output name=schema::"${schemaList[@]}"
 echo "::set-output name=seed-data::"${seedDataList[@]}"
+echo "::set-output name=isDBFileChangeExists::$isChangeInDBFiles"

@@ -45,24 +45,17 @@ jobs:
         run: chmod -R +x src/*
       - name: run the db
         run: |
-           declare -a schema
-           #echo ${{steps.arrayId.outputs.schema}}
-            for i in ${{steps.arrayId.outputs.schema}}
-            do
-             schema+=($i)
-            done
-           #schema=${{steps.arrayId.outputs.schema}}
-           #seedData=${{steps.arrayId.outputs.seed-data}}
-        
-           echo "${schema[@]}"
-           #echo "${seedData[@]}"
-           sample=('src/main/java/anotherSqlfile.sql')
-           if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then
+          echo ${{steps.arrayId.outputs.isDBFileChangeExists}}
+           if ( ${{steps.arrayId.outputs.isDBFileChangeExists}} ); then
               sudo /etc/init.d/mysql start
               mysql -e 'CREATE DATABASE test;' -uroot -proot
               mysql -e 'SHOW DATABASES;' -uroot -proot
               mysql -e 'use test;' -uroot -proot
               for i in ${{steps.arrayId.outputs.schema}}
+                 do 
+                 mysql -uroot -proot test < $i
+                 done
+              for i in ${{steps.arrayId.outputs.seed-data}}
                  do 
                  mysql -uroot -proot test < $i
                  done
