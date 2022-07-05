@@ -106,4 +106,4 @@ jobs:
         run: |
           chmod -R +x src/*
           bindu='GitHub'
-          /bin/bash src/main/resources/test.sh "${bindu}" 
+          src/main/resources/test.sh "${bindu}" 
