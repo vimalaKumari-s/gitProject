@@ -1,4 +1,4 @@
-name: VALIDATOR
+name: inputValidation
 on:
   push:
     branches:
