@@ -38,7 +38,8 @@ jobs:
         id: arrayId
         run: |
           declare -a arr
-          arr=$1
+          #arr=$1
+          arr=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           echo "printing the list in script file"
           echo "${arr[@]}"
           declare -A schemaList
