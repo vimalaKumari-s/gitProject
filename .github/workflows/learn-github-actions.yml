@@ -45,7 +45,8 @@ jobs:
         run: chmod -R +x src/*
       - name: run the db
         run: |
-           schema=(${{steps.arrayId.outputs.schema}})
+           declare -a schema
+           schema=${{steps.arrayId.outputs.schema}}
            seedData=${{steps.arrayId.outputs.seed-data}}
            for i in "${schema[@]}"
            do
@@ -59,7 +60,7 @@ jobs:
               mysql -e 'CREATE DATABASE test;' -uroot -proot
               mysql -e 'SHOW DATABASES;' -uroot -proot
               mysql -e 'use test;' -uroot -proot
-              mysql -uroot -proot test < "${schema[@]}"
+              mysql -uroot -proot test < ${schema[@]}
            fi
 
 
