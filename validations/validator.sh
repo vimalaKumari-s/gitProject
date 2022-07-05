@@ -17,5 +17,8 @@ elif [[ "$i" =~ ^seed-data.*  ]]; then
   fi
 fi
 done
-echo "::set-output name=schema::"${schemaList[@]}"
-echo "::set-output name=seed-data::"${seedDataList[@]}"
+
+# shellcheck disable=SC2145
+echo ::set-output name=schema::"${schemaList[@]}"
+# shellcheck disable=SC2145
+echo ::set-output name=seed-data::"${seedDataList[@]}"

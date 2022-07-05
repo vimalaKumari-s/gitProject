@@ -45,8 +45,13 @@ jobs:
         run: chmod -R +x src/*
       - name: run the db
         run: |
+           declare -a schema
            schema=${{steps.arrayId.outputs.schema}}
            seedData=${{steps.arrayId.outputs.seed-data}}
+           for i in "${schema[@]}"
+           do
+             echo "$i"
+           done
            echo "${schema[@]}"
            echo "${seedData[@]}"
            sample=('src/main/java/anotherSqlfile.sql')
@@ -55,7 +60,6 @@ jobs:
               mysql -e 'CREATE DATABASE test;' -uroot -proot
               mysql -e 'SHOW DATABASES;' -uroot -proot
               mysql -e 'use test;' -uroot -proot
-              mysql -uroot -proot test < $sample
               mysql -uroot -proot test < ${schema[@]}
            fi
 
