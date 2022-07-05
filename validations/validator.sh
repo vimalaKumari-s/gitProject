@@ -19,6 +19,6 @@ fi
 done
 
 # shellcheck disable=SC2145
-echo ::set-output name=schema::"${schemaList[@]}"
+echo "::set-output name=schema::"${schemaList[@]}"
 # shellcheck disable=SC2145
-echo ::set-output name=seed-data::"${seedDataList[@]}"
+"echo ::set-output name=seed-data::"${seedDataList[@]}"
