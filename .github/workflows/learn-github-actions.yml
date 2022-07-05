@@ -45,7 +45,7 @@ jobs:
         run: chmod -R +x src/*
       - name: run the db
         run: |
-           schema=${{steps.arrayId.outputs.schema}}
+           schema="${{steps.arrayId.outputs.schema}}"
            seedData=${{steps.arrayId.outputs.seed-data}}
 #           for i in "$schema[@]"
 #           do
