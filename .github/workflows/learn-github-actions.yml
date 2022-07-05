@@ -47,6 +47,10 @@ jobs:
         run: |
            schema=${{steps.arrayId.outputs.schema}}
            seedData=${{steps.arrayId.outputs.seed-data}}
+           for i in "$schema[@]"
+           do
+             echo "$i"
+           done
            echo "${schema[@]}"
            echo "${seedData[@]}"
            sample=('src/main/java/anotherSqlfile.sql')
