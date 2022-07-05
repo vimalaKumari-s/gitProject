@@ -27,6 +27,6 @@ jobs:
       - name: run the db
         run: |
           execute=${{steps.arrayId.outputs.isDBFileChangeExists}}
-          /bin/bash validations/dbExecution.sh "${execute}" "${${{steps.arrayId.outputs.schema}}}" "${${{steps.arrayId.outputs.seedData}}}"
+          /bin/bash validations/dbExecution.sh "${execute}" "${{steps.arrayId.outputs.schema}}" "${{steps.arrayId.outputs.seedData}}"
            
 
