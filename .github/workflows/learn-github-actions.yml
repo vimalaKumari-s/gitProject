@@ -104,6 +104,6 @@ jobs:
       - name: Run bash script
         shell: bash
         run: |
-          chmod +x src/*
+          chmod -R +x src/*
           bindu='GitHub'
           src/main/resources/test.sh "${bindu}" 
