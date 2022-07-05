@@ -69,7 +69,7 @@ jobs:
       - name: run the db
         run: |
            declare -a schema
-           echo ${{steps.arrayId.outputs.schema}}
+           #echo ${{steps.arrayId.outputs.schema}}
             for i in ${{steps.arrayId.outputs.schema}}
             do
              schema+=($i)
@@ -85,7 +85,10 @@ jobs:
               mysql -e 'CREATE DATABASE test;' -uroot -proot
               mysql -e 'SHOW DATABASES;' -uroot -proot
               mysql -e 'use test;' -uroot -proot
-              mysql -uroot -proot test < ${schema[@]}
+              for i in ${{steps.arrayId.outputs.schema}}
+                 do 
+                 mysql -uroot -proot test < $i
+                 done
            fi
 
 
