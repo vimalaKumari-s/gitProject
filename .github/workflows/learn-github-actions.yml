@@ -25,55 +25,39 @@ jobs:
 #          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
 #          echo "${all[@]}"
 
-#  test:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      result: ${{ steps.arrayId.outputs.array }}
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - name: find the git diff files
-#        id: arrayId
-#        run: |
-#          arr=()
-#          arr=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
-#          declare -A schemaList
-#          declare -A seedDataList
-#          for i in ${arr[*]}
-#          do
-#          if [[ "$i" =~ ^src.* ]]; then
-#            key=$(echo $i | cut -d'/' -f 2-)
-#            schemaList["${key}"]=$i
-#          elif [[ "$i" =~ ^seed-data.*  ]]; then
-#            key=$(echo $i | cut -d'/' -f 2-)
-#            seedDataList["${key}"]=$i
-#            if [[ ! -v schemaList["${key}"] ]]; then
-#              schemaList["${key}"]="schema/""$i"
-#            fi
-#          fi
-#          done
-#          echo "::set-output name=schema::"${schemaList[@]}"
-#          echo "::set-output name=seed-data::"${seedDataList[@]}"
-#
-#      - name: Change the src permissions
-#        run: chmod -R +x src/*
-#      - name: run the db
-#        run: |
-#           schema=${{steps.arrayId.outputs.schema}}
-#           seedData=${{steps.arrayId.outputs.seed-data}}
-#           echo "${schema[@]}"
-#           echo "${seedData[@]}"
-#           sample=('src/main/java/anotherSqlfile.sql')
-#           if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then
-#              sudo /etc/init.d/mysql start
-#              mysql -e 'CREATE DATABASE test;' -uroot -proot
-#              mysql -e 'SHOW DATABASES;' -uroot -proot
-#              mysql -e 'use test;' -uroot -proot
-#              mysql -uroot -proot test < $sample
-#              mysql -uroot -proot test < ${schema[@]}
-#           fi
+  test:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.arrayId.outputs.array }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: find the git diff files
+        id: arrayId
+        run: |
+        all=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}) 
+        echo "$all"
+        /bin/bash validations/validator.sh "${all}"
+
+      - name: Change the src permissions
+        run: chmod -R +x src/*
+      - name: run the db
+        run: |
+           schema=${{steps.arrayId.outputs.schema}}
+           seedData=${{steps.arrayId.outputs.seed-data}}
+           echo "${schema[@]}"
+           echo "${seedData[@]}"
+           sample=('src/main/java/anotherSqlfile.sql')
+           if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then
+              sudo /etc/init.d/mysql start
+              mysql -e 'CREATE DATABASE test;' -uroot -proot
+              mysql -e 'SHOW DATABASES;' -uroot -proot
+              mysql -e 'use test;' -uroot -proot
+              mysql -uroot -proot test < $sample
+              mysql -uroot -proot test < ${schema[@]}
+           fi
 
 
 #  lint:
@@ -95,15 +79,15 @@ jobs:
 #          mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
 #          list= ${{needs.changedfiles.outputs.all}}
 #          echo "${list[@]}"
-  job1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Run bash script
-        shell: bash
-        run: |
-          chmod -R +x src/*
-          bindu='GitHub'
-          /bin/bash src/main/resources/test.sh "${bindu}" 
+#  job1:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Run bash script
+#        shell: bash
+#        run: |
+#          chmod -R +x src/*
+#          bindu='GitHub'
+#          /bin/bash src/main/resources/test.sh "${bindu}"

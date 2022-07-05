@@ -1,5 +1,7 @@
-arr=()
-arr=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+declare -a arr
+arr=$1
+echo "printing the list in script file"
+echo "${arr[@]}"
 declare -A schemaList
 declare -A seedDataList
 for i in ${arr[*]}
@@ -15,6 +17,5 @@ elif [[ "$i" =~ ^seed-data.*  ]]; then
   fi
 fi
 done
-echo "${schemaList[@]}"
-echo "::set-output name=schema::${schemaList[@]}
-echo "::set-output name=seed-data::${seedDataList[@]}
+echo "::set-output name=schema::"${schemaList[@]}"
+echo "::set-output name=seed-data::"${seedDataList[@]}"
