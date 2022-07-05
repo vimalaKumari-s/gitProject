@@ -95,4 +95,15 @@ jobs:
 #          mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
 #          list= ${{needs.changedfiles.outputs.all}}
 #          echo "${list[@]}"
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.2
 
+      - name: Run bash script
+        shell: bash
+        run: |
+          chmod +x ./src
+          bindu='GitHub'
+          ./src/resources/test.sh "${bindu}" 
