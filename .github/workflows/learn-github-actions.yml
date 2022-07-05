@@ -70,12 +70,13 @@ jobs:
         run: |
            declare -a schema
            echo ${{steps.arrayId.outputs.schema}}
+            for i in ${{steps.arrayId.outputs.schema}}
+            do
+              echo "$i"
+            done
            schema=${{steps.arrayId.outputs.schema}}
            seedData=${{steps.arrayId.outputs.seed-data}}
-           for i in "${schema[@]}"
-           do
-             echo "$i"
-           done
+        
            echo "${schema[@]}"
            echo "${seedData[@]}"
            sample=('src/main/java/anotherSqlfile.sql')
