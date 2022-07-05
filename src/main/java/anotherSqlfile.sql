@@ -1,5 +1,1 @@
-CREATE TABLE `emf_event_logs` (
-  `id` int(11) ,
-  `org_id` int(11) ,
-  `event_name` varchar(32) ,
-  `event_info` varchar(32) )
+CREATE TABLE temp_table2(col1 int(11),  col3 int(11), col4 varchar(34));
