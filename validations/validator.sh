@@ -17,5 +17,6 @@ elif [[ "$i" =~ ^seed-data.*  ]]; then
   fi
 fi
 done
-echo "::set-output name=schema::"${schemaList[@]}""
-echo "::set-output name=seed-data::"${seedDataList[@]}""
+echo "::set-output name=schema::${schemaList[@]}"
+echo "::set-output name=seed-data::${seedDataList[@]}"
+echo "${outputs.schema}"
