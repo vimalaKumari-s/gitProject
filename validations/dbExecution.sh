@@ -6,7 +6,6 @@ if ( $execute ); then
   mysql -e 'use test;' -uroot -proot
   for i in $2
      do
-     echo "$i"
      mysql -uroot -proot test < $i
      done
   for i in $3
@@ -14,3 +13,9 @@ if ( $execute ); then
      mysql -uroot -proot test < $i
      done
 fi
+
+if [[ ! ("$?" = "0") ]]; then
+  echo "it is returning the exit code other than 0"
+  exit 1
+fi
+exit 0
