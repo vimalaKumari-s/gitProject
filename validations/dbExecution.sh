@@ -10,12 +10,12 @@ if ( $execute ); then
      done
   for i in $3
      do
-     mysql -uroot -proot test < $i
+     mysql -uroot -proot test < $i || exit 1
      done
 fi
 
-if [[ ! ("$?" = "0") ]]; then
-  echo "it is returning the exit code other than 0"
-  exit 1
-fi
-exit 0
+#if [[ ! ("$?" = "0") ]]; then
+#  echo "it is returning the exit code other than 0"
+#  exit 1
+#fi
+#exit 0
