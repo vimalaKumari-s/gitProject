@@ -14,8 +14,10 @@ if ( $execute ); then
      done
 fi
 
-#if [[ ! ("$?" = "0") ]]; then
-#  echo "it is returning the exit code other than 0"
-#  exit 1
-#fi
-#exit 0
+echo "checking whether it prints the code"
+echo "$?" "status of previous command in file"
+if [[ ! ("$?" = "0") ]]; then
+  echo "it is returning the exit code other than 0"
+  exit 1
+fi
+exit 0
