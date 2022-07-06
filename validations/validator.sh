@@ -1,3 +1,5 @@
+#!/bin/sh
+
 declare -a arr
 arr=$1
 declare -A schemaList

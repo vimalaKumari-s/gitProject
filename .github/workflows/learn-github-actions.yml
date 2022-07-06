@@ -25,7 +25,8 @@ jobs:
         run: chmod -R +x src/*
       - name: run the db
         run: |
-          execute=${{steps.arrayId.outputs.isDBFileChangeExists}}
-          /bin/bash validations/dbExecution.sh "${execute}" "${{steps.arrayId.outputs.schema}}" "${{steps.arrayId.outputs.seedData}}"
+           if [[ ${{steps.arrayId.outputs.isDBFileChangeExists}} ]]; then
+             /bin/bash validations/dbExecution.sh "${{steps.arrayId.outputs.schema}}" "${{steps.arrayId.outputs.seedData}}"
+           fi
            
 
