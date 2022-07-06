@@ -21,6 +21,6 @@ if [[ ${#schemaList[@]} -gt 0 || ${#seed-seedDataList[@]} -gt 0 ]]; then
   isChangeInDBFiles=true
 fi
 
-echo "::set-output name=schema::"${schemaList[@]}"
-echo "::set-output name=seedData::"${seedDataList[@]}"
+echo "::set-output name=schema::"${schemaList[@]}""
+echo "::set-output name=seedData::"${seedDataList[@]}""
 echo "::set-output name=isDBFileChangeExists::$isChangeInDBFiles"
