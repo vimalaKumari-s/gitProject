@@ -11,7 +11,7 @@ elif [[ "$i" =~ ^seed_data.*  ]]; then
   key=$(echo $i | cut -d'/' -f 2-)
   seedDataList["${key}"]=$i
   if [[ ! -v schemaList["${key}"] ]]; then
-    schemaList["${key}"]="schema/""$i"
+    schemaList["${key}"]="schema/""$key"
   fi
 fi
 done
