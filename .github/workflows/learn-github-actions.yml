@@ -23,8 +23,7 @@ jobs:
       - name: DB Execution
         #If changes are in schema/seed-data then queries will be executed using mysql-execution script
         run: |
-           if [[ ${{steps.changedFiles.outputs.isDBFileChangeExists}} ]]; then
+           if ( ${{steps.changedFiles.outputs.isDBFileChangeExists}} ); then
              /bin/bash validations/mysql-execution.sh "${{steps.changedFiles.outputs.schema}}" "${{steps.changedFiles.outputs.seedData}}"
            fi
-           
 

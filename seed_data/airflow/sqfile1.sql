@@ -1,1 +1,1 @@
-insert into temp_table(col1, col3, col4) values (2, 2, 'bujji')
+insert into temp_table(col1, col3, col4) values (2, 2, 'vimala')
