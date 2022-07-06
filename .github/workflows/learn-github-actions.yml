@@ -6,25 +6,6 @@ on:
       - "*"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-#   This workflow contains a single job called "build"
-#  changedfiles:
-#    runs-on: ubuntu-latest
-#    # Map a step output to a job output
-#    outputs:
-#      all: ${{ steps.changes.outputs.all}}
-#    steps:
-#      # Make sure we have some code to diff.
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - name: Get changed files
-#        id: changes
-#        # Set outputs using the command.
-#        run: |
-#          echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
-#          echo "${all[@]}"
-
   test:
     runs-on: ubuntu-latest
     outputs:
@@ -37,7 +18,7 @@ jobs:
       - name: find the git diff files
         id: arrayId
         run: |
-          all=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}) 
+          all=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           echo "$all"
           /bin/bash validations/validator.sh "${all}"
 
@@ -45,53 +26,9 @@ jobs:
         run: chmod -R +x src/*
       - name: run the db
         run: |
-           declare -a schema
-           schema=${{steps.arrayId.outputs.schema}}
-           seedData=${{steps.arrayId.outputs.seed-data}}
-           for i in "${schema[@]}"
-           do
-             echo "$i"
-           done
-           echo "${schema[@]}"
-           echo "${seedData[@]}"
-           sample=('src/main/java/anotherSqlfile.sql')
-           if [[ ${#schema[@]}>0 || ${#seed-data[@]}>0 ]]; then
-              sudo /etc/init.d/mysql start
-              mysql -e 'CREATE DATABASE test;' -uroot -proot
-              mysql -e 'SHOW DATABASES;' -uroot -proot
-              mysql -e 'use test;' -uroot -proot
-              mysql -uroot -proot test < ${schema[@]}
-           fi
+          execute=${{steps.arrayId.outputs.isDBFileChangeExists}}
+          /bin/bash validations/dbExecution.sh "${execute}" "${{steps.arrayId.outputs.schema}}" "${{steps.arrayId.outputs.seedData}}"
+          echo "printing the exit code from script"
+          echo "$?"
+           
 
-
-#  lint:
-#    runs-on: ubuntu-latest
-#    # require the first job to have ran
-#    needs: changedfiles
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0
-#      - name: echo changed files
-#        run: |
-#          sudo /etc/init.d/mysql start
-#          chmod -R +x src/*
-#          mysql -e 'CREATE DATABASE test;' -uroot -proot
-#          mysql -e 'SHOW DATABASES;' -uroot -proot
-#          mysql -e 'use test;' -uroot -proot
-#          mysql -uroot -proot test < ${{needs.changedfiles.outputs.all}}
-#          list= ${{needs.changedfiles.outputs.all}}
-#          echo "${list[@]}"
-#  job1:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#
-#      - name: Run bash script
-#        shell: bash
-#        run: |
-#          chmod -R +x src/*
-#          bindu='GitHub'
-#          /bin/bash src/main/resources/test.sh "${bindu}"
