@@ -13,7 +13,6 @@ public class LoginDetails {
     public LoginDetails() {
 
     }
-
     public String getUserName() {
         return userName;
     }
