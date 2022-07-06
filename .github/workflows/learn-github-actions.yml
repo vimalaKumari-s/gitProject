@@ -19,7 +19,6 @@ jobs:
         id: arrayId
         run: |
           all=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
-          echo "$all"
           /bin/bash validations/validator.sh "${all}"
 
       - name: Change the src permissions
@@ -28,7 +27,5 @@ jobs:
         run: |
           execute=${{steps.arrayId.outputs.isDBFileChangeExists}}
           /bin/bash validations/dbExecution.sh "${execute}" "${{steps.arrayId.outputs.schema}}" "${{steps.arrayId.outputs.seedData}}"
-          echo "printing the exit code from script"
-          echo "$?"
            
 

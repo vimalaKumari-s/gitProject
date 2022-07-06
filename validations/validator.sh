@@ -1,15 +1,13 @@
 declare -a arr
 arr=$1
-echo "printing the list in script file"
-echo "${arr[@]}"
 declare -A schemaList
 declare -A seedDataList
 for i in ${arr[*]}
 do
-if [[ "$i" =~ ^src.* ]]; then
+if [[ "$i" =~ ^schema.* ]]; then
   key=$(echo $i | cut -d'/' -f 2-)
   schemaList["${key}"]=$i
-elif [[ "$i" =~ ^seed-data.*  ]]; then
+elif [[ "$i" =~ ^seed_data.*  ]]; then
   key=$(echo $i | cut -d'/' -f 2-)
   seedDataList["${key}"]=$i
   if [[ ! -v schemaList["${key}"] ]]; then
