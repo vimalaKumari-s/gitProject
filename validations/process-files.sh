@@ -19,7 +19,7 @@ fi
 done
 
 isChangeInDBFiles=false
-if [[ ${#schemaList[@]} -gt 0 || ${#seed-seedDataList[@]} -gt 0 ]]; then
+if [[ ${#schemaList[@]} -gt 0 || ${#seedDataList[@]} -gt 0 ]]; then
   isChangeInDBFiles=true
 fi
 
