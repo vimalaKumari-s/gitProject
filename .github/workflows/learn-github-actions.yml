@@ -4,29 +4,27 @@ on:
     types: [opened, reopened, edited, synchronize]
     branches:
       - "*"
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
+  mySQLValidator:
+    #finds the changed files and if there are changes in schema/seed-data directory then it executes those queries on test database
     runs-on: ubuntu-latest
-    outputs:
-      result: ${{ steps.arrayId.outputs.array }}
     steps:
       - name: Checkout repository
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: find the git diff files
-        id: arrayId
+      - name: Get Changed-files
+        # Gets the changed files using the sha and calls the process-files.sh by passing the list of changed files
+        id: changedFiles
         run: |
           all=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
-          /bin/bash validations/validator.sh "${all}"
-
-      - name: Change the src permissions
-        run: chmod -R +x src/*
-      - name: run the db
+          /bin/bash validations/process-files.sh "${all}"
+      - name: DB Execution
+        #If changes are in schema/seed-data then queries will be executed using mysql-execution script
         run: |
-           if [[ ${{steps.arrayId.outputs.isDBFileChangeExists}} ]]; then
-             /bin/bash validations/dbExecution.sh "${{steps.arrayId.outputs.schema}}" "${{steps.arrayId.outputs.seedData}}"
+           if [[ ${{steps.changedFiles.outputs.isDBFileChangeExists}} ]]; then
+             /bin/bash validations/mysql-execution.sh "${{steps.changedFiles.outputs.schema}}" "${{steps.changedFiles.outputs.seedData}}"
            fi
            
 
