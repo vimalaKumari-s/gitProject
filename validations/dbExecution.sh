@@ -6,11 +6,11 @@ if ( $execute ); then
   mysql -e 'use test;' -uroot -proot
   for i in $2
      do
-     mysql -uroot -proot test < $i || exit 1
+     mysql -uroot -proot test < $i
      done
   for i in $3
      do
-     mysql -uroot -proot test < $i || exit 1
+     mysql -uroot -proot test < $i
      done
 fi
 
