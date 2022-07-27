@@ -5,10 +5,11 @@ import glob
 
 def check(stack_dir):
     failure_count=0
-    regex= re.compile('[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*',re.I)
-    for a in glob.glob("/Users/vimalakumari/Downloads/demo" + "/alerts/instances/*.yaml"):
+    pattern="[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*"
+    for a in glob.glob(stack_dir + "/alerts/instances/*.yaml"):
         lis=a.split("/")[-1].removesuffix(".yaml")
-        if not regex.match(lis):
+        print(lis)
+        if not bool(re.fullmatch(pattern, lis)):
             print("[ERROR] Validation failed for " + a)
             failure_count=failure_count+1
     if failure_count>0:
