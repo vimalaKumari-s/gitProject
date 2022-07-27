@@ -3,6 +3,7 @@
 #checking the schema files
 create_with_db_name=$(egrep -ri  "create table.*[a-zA-Z0-9_\`]{1,}\.[a-zA-Z0-9_\`]{1,}"   schema | wc -l )
 
+echo $create_with_db_name
 ret=0
 if [  $create_with_db_name -gt 0  ]; then
   echo ""
