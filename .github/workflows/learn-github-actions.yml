@@ -18,6 +18,6 @@ jobs:
         run: echo Starting...
       # Runs a set of commands using the runners shell
       - name: Run Validate Mysql schema seed data
-        run: /bin/bash validator/mysql-validator.sh
+        run: /bin/bash validations/mysql-validator.sh
       # Runs basic syntax validation on yaml files in alerts folder
 
